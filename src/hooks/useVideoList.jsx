@@ -36,8 +36,24 @@ export default function useVideoList(page) {
         setLoading(false);
 
         if (snapshot.exists()) {
+          // setVideos((prevVideos) => {
+          //   return [...prevVideos, ...Object.values(snapshot.val())];
+          // });
           setVideos((prevVideos) => {
-            return [...prevVideos, ...Object.values(snapshot.val())];
+            const newVideos = Object.values(snapshot.val());
+
+            // Use a Set to keep track of unique youtubeIDs
+            const uniqueYoutubeIDs = new Set(
+              prevVideos.map((video) => video.youtubeID)
+            );
+
+            // Filter out arrays with duplicate youtubeIDs
+            const filteredVideos = newVideos.filter(
+              (video) => !uniqueYoutubeIDs.has(video.youtubeID)
+            );
+
+            // Concatenate the unique arrays with the previous videos
+            return [...prevVideos, ...filteredVideos];
           });
         } else {
           setHasMore(false);

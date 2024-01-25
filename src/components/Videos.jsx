@@ -16,10 +16,20 @@ export default function Videos() {
           dataLength={videos.length}
           hasMore={hasMore}
           next={() => setPage(page + 8)}
+          loader={<h4>Loading...</h4>}
+          endMessage={
+            <p>
+              <b>Yay! You have seen it all</b>
+            </p>
+          }
         >
           {videos.map((video) =>
             video.noq > 0 ? (
-              <Link key={video.youtubeID} to="/quiz">
+              <Link
+                to={`/quiz/${video.youtubeID}`}
+                key={video.youtubeID}
+                state={{ videoTitle: video.title }}
+              >
                 <Video
                   title={video.title}
                   id={video.youtubeID}
